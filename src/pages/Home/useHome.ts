@@ -1,7 +1,9 @@
 import { useLocation } from "react-router-dom"
 import { parse } from "query-string"
+import { useQuery } from "react-query"
 
 import { getQueryArray } from "../../utils/url"
+import { getAdsData } from "../../services/requests/ads"
 
 export const useHome = () => {
   const location = useLocation()
@@ -14,8 +16,15 @@ export const useHome = () => {
   const datasources = getQueryArray(queryStringData, "datasources")
   const campaigns = getQueryArray(queryStringData, "campaigns")
 
+  const { isLoading, isSuccess, data } = useQuery("adsData", getAdsData, {
+    retry: 1,
+  })
+
   return {
     datasources,
     campaigns,
+    data,
+    isLoading,
+    isSuccess,
   }
 }
