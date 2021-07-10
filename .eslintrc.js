@@ -34,8 +34,8 @@ module.exports = {
   },
   overrides: [
     {
-      // no need to set a return type of react components: https://kentcdodds.com/blog/how-to-write-a-react-component-in-typescript
-      files: ["src/**/*.tsx"],
+      // no need to set a return type of react components and hooks - they can be usually easily inferred: https://kentcdodds.com/blog/how-to-write-a-react-component-in-typescript
+      files: ["src/**/*.tsx", "src/**/use*.ts"],
       rules: {
         "@typescript-eslint/explicit-module-boundary-types": ["off"],
       },
