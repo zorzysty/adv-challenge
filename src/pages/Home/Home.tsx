@@ -1,5 +1,6 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { Link as RouterLink } from "react-router-dom"
+import { Heading, ListItem, UnorderedList, Link } from "@chakra-ui/react"
 
 import { useHome } from "./useHome"
 
@@ -8,50 +9,65 @@ export const Home = () => {
   const { campaigns, datasources } = useHome()
 
   return (
-    <div>
-      <h1>HOME</h1>
+    <>
+      <Heading as={"h1"}>HOMEss</Heading>
 
-      <h2>Selected datasources:</h2>
-      <ul>
-        {datasources.map((datasource) => (
-          <li key={datasource}>{datasource}</li>
-        ))}
-      </ul>
+      <UnorderedList>
+        <ListItem>
+          <Link as={RouterLink} to="/?datasources=aaa">
+            single datasource
+          </Link>
+        </ListItem>
 
-      <h2>Selected campaigns:</h2>
-      <ul>
-        {campaigns.map((campaign) => (
-          <li key={campaign}>{campaign}</li>
-        ))}
-      </ul>
+        <ListItem>
+          <Link as={RouterLink} to="/?datasources=aaa,bbb,ccc,aaa">
+            only datasources
+          </Link>
+        </ListItem>
 
-      <ul>
-        <li>
-          <Link to="/?datasources=aaa">single datasource</Link>
-        </li>
+        <ListItem>
+          <Link as={RouterLink} to="/?campaigns=xxx">
+            single campaign
+          </Link>
+        </ListItem>
 
-        <li>
-          <Link to="/?datasources=aaa,bbb,ccc,aaa">only datasources</Link>
-        </li>
+        <ListItem>
+          <Link as={RouterLink} to="/?campaigns=xxx,yyy,zzz,yyy">
+            only campaigns
+          </Link>
+        </ListItem>
 
-        <li>
-          <Link to="/?campaigns=xxx">single campaign</Link>
-        </li>
-
-        <li>
-          <Link to="/?campaigns=xxx,yyy,zzz,yyy">only campaigns</Link>
-        </li>
-
-        <li>
-          <Link to="/?datasources=aaa,bbb,ccc,aaa&campaigns=xxx,yyy,zzz,yyy">
+        <ListItem>
+          <Link
+            as={RouterLink}
+            to="/?datasources=aaa,bbb,ccc,aaa&campaigns=xxx,yyy,zzz,yyy"
+          >
             both
           </Link>
-        </li>
+        </ListItem>
 
-        <li>
-          <Link to="/">none</Link>
-        </li>
-      </ul>
-    </div>
+        <ListItem>
+          <Link as={RouterLink} to="/">
+            none
+          </Link>
+        </ListItem>
+      </UnorderedList>
+
+      <Heading as={"h2"}>Selected datasources:</Heading>
+
+      <UnorderedList>
+        {datasources.map((datasource) => (
+          <ListItem key={datasource}>{datasource}</ListItem>
+        ))}
+      </UnorderedList>
+
+      <Heading as={"h2"}>Selected campaigns:</Heading>
+
+      <UnorderedList>
+        {campaigns.map((campaign) => (
+          <ListItem key={campaign}>{campaign}</ListItem>
+        ))}
+      </UnorderedList>
+    </>
   )
 }
