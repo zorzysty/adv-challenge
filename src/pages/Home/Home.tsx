@@ -31,7 +31,7 @@ export const Home = () => {
         </li>
 
         <li>
-          <Link to="/?datasources=aaa|bbb|ccc|aaa">only datasources</Link>
+          <Link to="/?datasources=aaa,bbb,ccc,aaa">only datasources</Link>
         </li>
 
         <li>
@@ -39,11 +39,11 @@ export const Home = () => {
         </li>
 
         <li>
-          <Link to="/?campaigns=xxx|yyy|zzz|yyy">only campaigns</Link>
+          <Link to="/?campaigns=xxx,yyy,zzz,yyy">only campaigns</Link>
         </li>
 
         <li>
-          <Link to="/?datasources=aaa|bbb|ccc|aaa&campaigns=xxx|yyy|zzz|yyy">
+          <Link to="/?datasources=aaa,bbb,ccc,aaa&campaigns=xxx,yyy,zzz,yyy">
             both
           </Link>
         </li>

@@ -10,5 +10,7 @@ export const getQueryArray = (
     return []
   }
 
-  return typeof value === "string" ? [value] : [...new Set(value)]
+  return typeof value === "string"
+    ? [value]
+    : [...new Set(value)].filter(Boolean)
 }

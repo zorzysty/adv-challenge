@@ -8,7 +8,7 @@ export const useHome = () => {
 
   const queryStringData = parse(location.search, {
     arrayFormat: "separator",
-    arrayFormatSeparator: "|",
+    arrayFormatSeparator: ",",
   })
 
   const datasources = getQueryArray(queryStringData, "datasources")
