@@ -7,24 +7,31 @@ export const csvToArrayOfObjects = (
   input: string,
   numberConversions?: Array<boolean>
 ): ArrayFromCsv => {
-  const [headersLine, ...itemLines] = input
-    .split("\n")
-    // filter out empty lines
-    .filter((line) => Boolean(line.length))
+  try {
+    const trimmedInput = input.trim()
 
-  const headers = headersLine
-    .split(",")
-    .map((header: string) => header.toLowerCase())
+    if (!trimmedInput) {
+      return []
+    }
 
-  return itemLines.map((itemLine) => {
-    const itemArray = itemLine.split(",")
+    const [headersLine, ...itemLines] = trimmedInput.split("\n")
 
-    // reduce itemArray to an object with headers as keys
-    return itemArray.reduce((accu, curr, idx) => {
-      return {
-        ...accu,
-        [headers[idx]]: numberConversions?.[idx] ? Number(curr) : curr,
-      }
-    }, {})
-  })
+    const headers = headersLine
+      .split(",")
+      .map((header: string) => header.toLowerCase())
+
+    return itemLines.map((itemLine) => {
+      const itemArray = itemLine.split(",")
+
+      // reduce itemArray to an object with headers as keys
+      return itemArray.reduce((accu, curr, idx) => {
+        return {
+          ...accu,
+          [headers[idx]]: numberConversions?.[idx] ? Number(curr) : curr,
+        }
+      }, {})
+    })
+  } catch {
+    return []
+  }
 }

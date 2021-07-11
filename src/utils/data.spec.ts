@@ -51,4 +51,26 @@ describe("csvToArrayOfObjects", () => {
       expect(typeof values[4]).toBe("number")
     })
   })
+
+  test("returns empty array given an empty file", () => {
+    const emptyResult = csvToArrayOfObjects("")
+
+    expect(emptyResult).toEqual([])
+  })
+
+  test.each([
+    [{}, []],
+    [[], []],
+    [122, []],
+    [true, []],
+    [null, []],
+    [undefined, []],
+    [function () {}, []],
+  ])(
+    "returns empty array given an invalid input type (%s)",
+    (input, expected) => {
+      // @ts-ignore purposeful wrong input type
+      expect(csvToArrayOfObjects(input)).toEqual(expected)
+    }
+  )
 })
