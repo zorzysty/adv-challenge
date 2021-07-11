@@ -18,7 +18,6 @@ type Props = {
   placeholder: string
 }
 
-// todo: add tests
 export const FilterSelector = ({
   options,
   onSelect,
@@ -33,6 +32,7 @@ export const FilterSelector = ({
         bg={"white"}
         mb={1}
         disabled={options.available.length < 1}
+        role={"listbox"}
       >
         {options.available.map((option) => (
           <option value={option} key={option}>
@@ -50,7 +50,13 @@ export const FilterSelector = ({
         overflowY={"auto"}
         mb={10}
       >
-        <UnorderedList listStyleType={"none"} margin={0} spacing={1} p={2}>
+        <UnorderedList
+          listStyleType={"none"}
+          margin={0}
+          spacing={1}
+          p={2}
+          data-testid={"selected-filters"}
+        >
           {options.selected.map((option) => (
             <ListItem
               key={option}
@@ -82,6 +88,7 @@ export const FilterSelector = ({
                   size={"xs"}
                   opacity={0}
                   transform={"opacity 0.15s linear"}
+                  data-testid={`remove-${option}`}
                   onClick={() => {
                     onRemove(option)
                   }}
