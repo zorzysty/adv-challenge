@@ -1,93 +1,62 @@
 import React from "react"
-import { Link as RouterLink } from "react-router-dom"
-import {
-  Box,
-  Flex,
-  Heading,
-  HStack,
-  Link,
-  ListItem,
-  UnorderedList,
-  VStack,
-} from "@chakra-ui/react"
+import { Box, Grid } from "@chakra-ui/react"
 
 import { Chart } from "../../components/Chart"
+import { FilterSelector } from "../../components/FilterSelector"
 
 import { useHome } from "./useHome"
 
-// todo: this is a temporary dummy component to test routing
 export const Home = () => {
-  const { datasources, campaigns, isLoading, isSuccess, data } = useHome()
+  const {
+    selectedDatasources,
+    selectedCampaigns,
+    isLoading,
+    isSuccess,
+    data,
+    availableDatasources,
+    availableCampaigns,
+    pushToSelected,
+    removeFromSelected,
+  } = useHome()
 
   return (
-    <VStack alignItems={"stretch"} width={"100%"} spacing={6}>
-      <Box>
-        <Heading as={"h1"}>HOME</Heading>
+    <Grid templateColumns="400px 1fr" height={"100vh"}>
+      <Box
+        as={"aside"}
+        py={6}
+        px={4}
+        borderRight={"1px solid"}
+        borderColor={"gray.300"}
+        backgroundColor={"gray.50"}
+      >
+        <FilterSelector
+          onSelect={(e) => {
+            pushToSelected(e, "datasources")
+          }}
+          onRemove={(option) => {
+            removeFromSelected(option, "datasources")
+          }}
+          availableOptions={availableDatasources}
+          selectedOptions={selectedDatasources}
+          placeholder={"Select datasource to add"}
+        />
 
-        <HStack spacing={5} px={5} py={2}>
-          <Link as={RouterLink} to="/?datasources=Google Analytics">
-            single datasource
-          </Link>
-
-          <Link
-            as={RouterLink}
-            to="/?datasources=Google Analytics,Mailchimp,Facebook Ads"
-          >
-            only datasources
-          </Link>
-
-          <Link
-            as={RouterLink}
-            to="/?campaigns=New General Campaign - ROM - Desktop"
-          >
-            single campaign
-          </Link>
-
-          <Link
-            as={RouterLink}
-            to="/?campaigns=New General Campaign - ROM - Desktop,New General Campaign - Rest - Mobile"
-          >
-            only campaigns
-          </Link>
-
-          <Link
-            as={RouterLink}
-            to="/?datasources=Google Analytics,Mailchimp,Facebook Ads&campaigns=New General Campaign - ROM - Desktop,New General Campaign - Rest - Mobile"
-          >
-            both
-          </Link>
-
-          <Link as={RouterLink} to="/">
-            none
-          </Link>
-        </HStack>
+        <FilterSelector
+          onSelect={(e) => {
+            pushToSelected(e, "campaigns")
+          }}
+          onRemove={(option) => {
+            removeFromSelected(option, "campaigns")
+          }}
+          availableOptions={availableCampaigns}
+          selectedOptions={selectedCampaigns}
+          placeholder={"Select campaign to add"}
+        />
       </Box>
 
-      <Box height={"600px"}>
+      <Box as={"main"} height={"100%"} py={6}>
         <Chart data={data} isLoading={isLoading} isSuccess={isSuccess} />
       </Box>
-
-      <Flex mt={5}>
-        <Box flex={1}>
-          <Heading as={"h2"}>Selected datasources:</Heading>
-
-          <UnorderedList>
-            {datasources.map((datasource) => (
-              <ListItem key={datasource}>{datasource}</ListItem>
-            ))}
-          </UnorderedList>
-        </Box>
-
-        <Box flex={1}>
-          <Heading as={"h2"}>Selected campaigns:</Heading>
-
-          <UnorderedList>
-            {campaigns.map((campaign) => (
-              <ListItem key={campaign}>{campaign}</ListItem>
-            ))}
-          </UnorderedList>
-        </Box>
-      </Flex>
-    </VStack>
+    </Grid>
   )
 }

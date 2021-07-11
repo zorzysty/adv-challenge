@@ -6,11 +6,4 @@ export const theme = extendTheme({
   components: {
     Link,
   },
-  styles: {
-    global: {
-      body: {
-        padding: 6,
-      },
-    },
-  },
 })

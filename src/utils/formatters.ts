@@ -58,5 +58,5 @@ export const dMMM = (date: string): string => {
   const [day, month, year] = date.split(".")
   const properDate = `${year}=${month}-${day}`
 
-  return format(new Date(properDate), "d MMM")
+  return format(new Date(properDate), "dd MMM")
 }

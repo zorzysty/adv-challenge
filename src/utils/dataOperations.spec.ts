@@ -1,6 +1,6 @@
 import { adsData } from "../mocks/tests/dataOperations"
 
-import { aggregateBy, filterData } from "./dataOperations"
+import { aggregateBy, filterData, getUniqueEntries } from "./dataOperations"
 
 describe("aggregateBy", () => {
   test("aggregates counts by the given property value", () => {
@@ -173,5 +173,39 @@ describe("filterData", () => {
         impressions: 764627,
       },
     ])
+  })
+})
+
+describe("getUniqueEntries", () => {
+  test.each([
+    ["campaign", ["Like Ads", "Offer Campaigns - Conversions", "B2B - Leads"]],
+    ["datasource", ["Facebook Ads", "Google Adwords"]],
+  ])(
+    "returns unique entries by property (%s)",
+    // @ts-ignore this is all right for the given cases of "campaign" and "datasource"
+    (input: "campaign" | "datasource", expected) => {
+      const result = getUniqueEntries({
+        data: adsData,
+        property: input,
+        without: [],
+      })
+
+      expect(result).toEqual(expected)
+    }
+  )
+
+  test.each([
+    [[], ["Like Ads", "Offer Campaigns - Conversions", "B2B - Leads"]],
+    [["Like Ads"], ["Offer Campaigns - Conversions", "B2B - Leads"]],
+    [["Offer Campaigns - Conversions", "B2B - Leads"], ["Like Ads"]],
+    [["Like Ads", "Offer Campaigns - Conversions", "B2B - Leads"], []],
+  ])("removes values from the without array (%s)", (input, expected) => {
+    const result = getUniqueEntries({
+      data: adsData,
+      property: "campaign",
+      without: input,
+    })
+
+    expect(result).toEqual(expected)
   })
 })

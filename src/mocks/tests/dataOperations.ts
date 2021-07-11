@@ -1,4 +1,10 @@
-export const adsData = [
+export const adsData: {
+  date: string
+  datasource: string
+  campaign: string
+  clicks: number
+  impressions: number
+}[] = [
   {
     date: "01.01.2019",
     datasource: "Facebook Ads",

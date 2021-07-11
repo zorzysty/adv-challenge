@@ -102,10 +102,10 @@ describe("numberToKMB", () => {
 describe("dateFormat", () => {
   test.each([
     ["31.01.2019", "31 Jan"],
-    ["01.01.2019", "1 Jan"],
+    ["01.01.2019", "01 Jan"],
     ["29.10.2019", "29 Oct"],
-    ["02.09.2035", "2 Sep"],
-    ["04.12.2022", "4 Dec"],
+    ["02.09.2035", "02 Sep"],
+    ["04.12.2022", "04 Dec"],
   ])("returns proper date string (%s)", (input, expected) => {
     expect(dMMM(input)).toEqual(expected)
   })

@@ -73,6 +73,33 @@ export const filterData = <DataType extends BaseType>(
     return fitsAnyFilter
   })
 
-  // @ts-ignore todo: improve types
+  // todo: improve types
   return result as DataType
+}
+
+type GetUniqueEntriesArgs<DataType> = {
+  data?: DataType
+  property: keyof Unarray<DataType>
+  without: Array<string | number>
+}
+
+export const getUniqueEntries = <DataType extends BaseType>({
+  data,
+  property,
+  without,
+}: GetUniqueEntriesArgs<DataType>): Array<string | number> => {
+  if (!data?.length) {
+    return []
+  }
+
+  // @ts-ignore todo: improve types
+  const mapped = data.map((entry) => entry[property])
+
+  const deDuplicated = [...new Set(mapped)]
+
+  const withRemovedEntries = deDuplicated.filter(
+    (entry: string | number) => !without.includes(entry)
+  )
+
+  return withRemovedEntries as string[]
 }

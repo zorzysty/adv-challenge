@@ -30,11 +30,19 @@ export const Chart = ({ data, isLoading, isSuccess }: Props) => {
   }
 
   if (!isSuccess) {
-    return <Text>Oops! Something went wrong</Text>
+    return (
+      <Center height={"100%"}>
+        <Text>Oops! Something went wrong</Text>
+      </Center>
+    )
   }
 
   if (!data?.length) {
-    return <Text>No data in the file :(</Text>
+    return (
+      <Center height={"100%"}>
+        <Text>No data meets the selected criteria :(</Text>
+      </Center>
+    )
   }
 
   return (
@@ -49,12 +57,15 @@ export const Chart = ({ data, isLoading, isSuccess }: Props) => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
+
         <XAxis dataKey="date" tickFormatter={dMMM} />
+
         <YAxis
           yAxisId="left"
           label={{ value: "Clicks", angle: -90, position: "left" }}
           tickFormatter={positiveNumberToKMB}
         />
+
         <YAxis
           yAxisId="right"
           orientation="right"
@@ -65,8 +76,11 @@ export const Chart = ({ data, isLoading, isSuccess }: Props) => {
           }}
           tickFormatter={positiveNumberToKMB}
         />
+
         <Tooltip />
+
         <Legend />
+
         <Line
           yAxisId="left"
           name="Clicks"
@@ -75,6 +89,7 @@ export const Chart = ({ data, isLoading, isSuccess }: Props) => {
           stroke="#8884d8"
           strokeWidth={2}
         />
+
         <Line
           yAxisId="right"
           type="monotone"
