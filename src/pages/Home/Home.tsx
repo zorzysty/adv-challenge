@@ -72,7 +72,7 @@ export const Home = () => {
           px={5}
           pt={5}
         >
-          {data}
+          <pre>{JSON.stringify(data, null, 2)}</pre>
         </Box>
       </Box>
 

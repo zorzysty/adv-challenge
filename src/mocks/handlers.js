@@ -1,6 +1,6 @@
 import { rest } from "msw"
 
-import csvFile from "./adsData.csv"
+import csvFile from "./adsData.chunk.csv"
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
@@ -22,4 +22,4 @@ const adsDataResolver = async (_, res, ctx) => {
   // )
 }
 
-export const handlers = [rest.get(`${baseUrl}/*csv`, adsDataResolver)]
+export const handlers = [rest.get(`${baseUrl}/*.csv`, adsDataResolver)]

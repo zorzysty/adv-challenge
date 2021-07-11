@@ -1,4 +1,5 @@
-export const adsDataTransform = (input: string): string => {
-  // todo:
-  return input.slice(0, 100)
+import { ArrayFromCsv, csvToArrayOfObjects } from "../../utils/data"
+
+export const adsDataTransform = (input: string): ArrayFromCsv => {
+  return csvToArrayOfObjects(input, [false, false, false, true, true])
 }

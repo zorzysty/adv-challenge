@@ -23,7 +23,8 @@ export const useHome = () => {
   return {
     datasources,
     campaigns,
-    data,
+    //todo: remove slicing
+    data: data?.slice(0, 5),
     isLoading,
     isSuccess,
   }
