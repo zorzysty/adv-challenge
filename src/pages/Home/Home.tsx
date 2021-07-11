@@ -7,25 +7,17 @@ import {
   HStack,
   Link,
   ListItem,
-  Spinner,
-  Text,
   UnorderedList,
   VStack,
 } from "@chakra-ui/react"
+
+import { Chart } from "../../components/Chart"
 
 import { useHome } from "./useHome"
 
 // todo: this is a temporary dummy component to test routing
 export const Home = () => {
   const { datasources, campaigns, isLoading, isSuccess, data } = useHome()
-
-  if (isLoading) {
-    return <Spinner />
-  }
-
-  if (!isSuccess) {
-    return <Text>Oops! Something went wrong</Text>
-  }
 
   return (
     <VStack alignItems={"stretch"} width={"100%"} spacing={6}>
@@ -62,18 +54,8 @@ export const Home = () => {
         </HStack>
       </Box>
 
-      <Box>
-        <Heading as={"h2"}>Fetched data slice:</Heading>
-
-        <Box
-          border={"1px solid"}
-          borderColor={"purple.100"}
-          borderRadius={5}
-          px={5}
-          pt={5}
-        >
-          <pre>{JSON.stringify(data, null, 2)}</pre>
-        </Box>
+      <Box height={"600px"}>
+        <Chart data={data} isLoading={isLoading} isSuccess={isSuccess} />
       </Box>
 
       <Flex mt={5}>

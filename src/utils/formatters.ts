@@ -1,3 +1,6 @@
+import produce from "immer"
+import { format } from "date-fns"
+
 export type ArrayFromCsv = { [header: string]: number | string }[]
 
 /**
@@ -25,13 +28,35 @@ export const csvToArrayOfObjects = (
 
       // reduce itemArray to an object with headers as keys
       return itemArray.reduce((accu, curr, idx) => {
-        return {
-          ...accu,
-          [headers[idx]]: numberConversions?.[idx] ? Number(curr) : curr,
-        }
+        return produce(accu, (draft: Record<string, unknown>) => {
+          draft[headers[idx]] = numberConversions?.[idx] ? Number(curr) : curr
+        })
       }, {})
     })
   } catch {
     return []
   }
+}
+
+export const positiveNumberToKMB = (number: number): string => {
+  if (number >= 1_000_000_000) {
+    return (number / 1_000_000_000).toString() + "B"
+  }
+
+  if (number >= 1_000_000) {
+    return (number / 1_000_000).toString() + "M"
+  }
+
+  if (number >= 1_000) {
+    return (number / 1_000).toString() + "K"
+  }
+
+  return number.toString()
+}
+
+export const dMMM = (date: string): string => {
+  const [day, month, year] = date.split(".")
+  const properDate = `${year}=${month}-${day}`
+
+  return format(new Date(properDate), "d MMM")
 }

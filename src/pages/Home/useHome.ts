@@ -4,6 +4,7 @@ import { useQuery } from "react-query"
 
 import { getQueryArray } from "../../utils/url"
 import { getAdsData } from "../../services/requests/ads"
+import { aggregateBy } from "../../utils/dataOperations"
 
 export const useHome = () => {
   const location = useLocation()
@@ -20,11 +21,14 @@ export const useHome = () => {
     retry: 1,
   })
 
+  const dataCombinedByDate = data
+    ? aggregateBy(data, "date", ["clicks", "impressions"])
+    : []
+
   return {
     datasources,
     campaigns,
-    //todo: remove slicing
-    data: data?.slice(0, 5),
+    data: dataCombinedByDate,
     isLoading,
     isSuccess,
   }
