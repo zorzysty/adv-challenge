@@ -2,8 +2,9 @@ import React from "react"
 import ReactDOM from "react-dom"
 
 import { App } from "./App"
+import { config } from "./config"
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "development" && config.enableResponseMocking) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { worker } = require("./mocks/browser")
 

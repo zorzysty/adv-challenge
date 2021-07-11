@@ -49,3 +49,10 @@ Runs type checking of the code using TypeScript
 ### `yarn run validate`
 
 Runs formatter, linter, type-checker and tests in a sequence. Especially useful as a pre-commit git hook.
+
+## Request mocking
+
+To save bandwidth and speed up the development experience, MSW mocking is enabled which fetches the CSV file from localhost instead of AWS.\
+To disable this feature, simply go to `src/config.ts` and set `enableResponseMocking` to `false`.
+
+*NOTE: request mocking with MSW does not work on Firefox when using XHR (https://github.com/mswjs/msw/issues/220)*
