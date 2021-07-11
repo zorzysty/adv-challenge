@@ -8,13 +8,11 @@ import { useHome } from "./useHome"
 
 export const Home = () => {
   const {
-    selectedDatasources,
-    selectedCampaigns,
+    datasources,
+    campaigns,
     isLoading,
     isSuccess,
     data,
-    availableDatasources,
-    availableCampaigns,
     pushToSelected,
     removeFromSelected,
   } = useHome()
@@ -30,27 +28,25 @@ export const Home = () => {
         backgroundColor={"gray.50"}
       >
         <FilterSelector
+          placeholder={"Select datasource to add"}
+          options={datasources}
           onSelect={(e) => {
             pushToSelected(e, "datasources")
           }}
           onRemove={(option) => {
             removeFromSelected(option, "datasources")
           }}
-          availableOptions={availableDatasources}
-          selectedOptions={selectedDatasources}
-          placeholder={"Select datasource to add"}
         />
 
         <FilterSelector
+          placeholder={"Select campaign to add"}
+          options={campaigns}
           onSelect={(e) => {
             pushToSelected(e, "campaigns")
           }}
           onRemove={(option) => {
             removeFromSelected(option, "campaigns")
           }}
-          availableOptions={availableCampaigns}
-          selectedOptions={selectedCampaigns}
-          placeholder={"Select campaign to add"}
         />
       </Box>
 

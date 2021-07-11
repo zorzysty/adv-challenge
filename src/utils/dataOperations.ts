@@ -17,7 +17,7 @@ export const aggregateBy = <DataType extends BaseType>(
   metrics: Array<keyof Unarray<DataType>>
 ): DataType => {
   const reducer = (accu: Reduced<DataType>, current: Unarray<DataType>) => {
-    const aggregated = produce(accu.aggregated, (draft: DataType) => {
+    const aggregated = produce(accu.aggregated, (draft) => {
       // add current metrics to aggregated values for this property
       if (current[property] === accu.lastPropertyValue) {
         metrics.forEach((metric) => {
@@ -93,7 +93,7 @@ export const getUniqueEntries = <DataType extends BaseType>({
   }
 
   // @ts-ignore todo: improve types
-  const mapped = data.map((entry) => entry[property])
+  const mapped = data.map((entry: Unarray<DataType>) => entry[property])
 
   const deDuplicated = [...new Set(mapped)]
 

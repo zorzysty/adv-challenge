@@ -5,12 +5,33 @@ import { ChangeEvent } from "react"
 
 import { config } from "../../config"
 import { getQueryArray } from "../../utils/url"
-import { getAdsData } from "../../services/requests/ads"
+import { AdsData, getAdsData } from "../../services/requests/ads"
 import {
   aggregateBy,
   filterData,
   getUniqueEntries,
 } from "../../utils/dataOperations"
+
+function prepareData({
+  data,
+  selectedDatasources,
+  selectedCampaigns,
+}: {
+  data?: AdsData
+  selectedDatasources: string[]
+  selectedCampaigns: string[]
+}) {
+  if (!data?.length) {
+    return []
+  }
+
+  const filteredData = filterData(data, [
+    { key: "datasource", value: selectedDatasources },
+    { key: "campaign", value: selectedCampaigns },
+  ])
+
+  return aggregateBy(filteredData, "date", ["clicks", "impressions"])
+}
 
 export const useHome = () => {
   const location = useLocation()
@@ -25,29 +46,29 @@ export const useHome = () => {
   const selectedDatasources = getQueryArray(queryStringData, "datasources")
   const selectedCampaigns = getQueryArray(queryStringData, "campaigns")
 
-  const availableDatasources = getUniqueEntries({
+  const datasources = {
+    selected: selectedDatasources,
+    available: getUniqueEntries({
+      data,
+      property: "datasource",
+      without: selectedDatasources,
+    }),
+  }
+
+  const campaigns = {
+    selected: selectedCampaigns,
+    available: getUniqueEntries({
+      data,
+      property: "campaign",
+      without: selectedCampaigns,
+    }),
+  }
+
+  const preparedData = prepareData({
     data,
-    property: "datasource",
-    without: selectedDatasources,
+    selectedDatasources,
+    selectedCampaigns,
   })
-
-  const availableCampaigns = getUniqueEntries({
-    data,
-    property: "campaign",
-    without: selectedCampaigns,
-  })
-
-  const filteredData = data
-    ? filterData(data, [
-        { key: "datasource", value: selectedDatasources },
-        { key: "campaign", value: selectedCampaigns },
-      ])
-    : []
-
-  const dataCombinedByDate = aggregateBy(filteredData, "date", [
-    "clicks",
-    "impressions",
-  ])
 
   const pushToSelected = (
     e: ChangeEvent<HTMLSelectElement>,
@@ -57,19 +78,17 @@ export const useHome = () => {
       return
     }
 
-    const search = stringify(
-      {
-        datasources:
-          selectedArray === "datasources"
-            ? [...selectedDatasources, e.target.value]
-            : selectedDatasources,
-        campaigns:
-          selectedArray === "campaigns"
-            ? [...selectedCampaigns, e.target.value]
-            : selectedCampaigns,
-      },
-      config.queryStringOptions
-    )
+    const current = {
+      datasources: selectedDatasources,
+      campaigns: selectedCampaigns,
+    }
+
+    const updated = {
+      ...current,
+      [selectedArray]: current[selectedArray].concat(e.target.value),
+    }
+
+    const search = stringify(updated, config.queryStringOptions)
 
     history.push(`/?${search}`)
   }
@@ -82,31 +101,27 @@ export const useHome = () => {
       return
     }
 
-    const search = stringify(
-      {
-        datasources:
-          selectedArray === "datasources"
-            ? selectedDatasources.filter((datasource) => datasource !== option)
-            : selectedDatasources,
-        campaigns:
-          selectedArray === "campaigns"
-            ? selectedCampaigns.filter((campaign) => campaign !== option)
-            : selectedCampaigns,
-      },
-      config.queryStringOptions
-    )
+    const current = {
+      datasources: selectedDatasources,
+      campaigns: selectedCampaigns,
+    }
+
+    const updated = {
+      ...current,
+      [selectedArray]: current[selectedArray].filter((item) => item !== option),
+    }
+
+    const search = stringify(updated, config.queryStringOptions)
 
     history.push(`/?${search}`)
   }
 
   return {
-    selectedDatasources,
-    selectedCampaigns,
-    data: dataCombinedByDate,
+    datasources,
+    campaigns,
+    data: preparedData,
     isLoading,
     isSuccess,
-    availableDatasources,
-    availableCampaigns,
     pushToSelected,
     removeFromSelected,
   }

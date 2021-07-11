@@ -9,16 +9,18 @@ import {
 } from "@chakra-ui/react"
 
 type Props = {
-  availableOptions: (string | number)[]
+  options: {
+    selected: (string | number)[]
+    available: (string | number)[]
+  }
   onSelect: (e: ChangeEvent<HTMLSelectElement>) => void
-  selectedOptions: (string | number)[]
   onRemove: (option: string | number) => void
   placeholder: string
 }
 
+// todo: add tests
 export const FilterSelector = ({
-  availableOptions,
-  selectedOptions,
+  options,
   onSelect,
   onRemove,
   placeholder,
@@ -30,9 +32,9 @@ export const FilterSelector = ({
         onChange={onSelect}
         bg={"white"}
         mb={1}
-        disabled={availableOptions.length < 1}
+        disabled={options.available.length < 1}
       >
-        {availableOptions.map((option) => (
+        {options.available.map((option) => (
           <option value={option} key={option}>
             {option}
           </option>
@@ -49,7 +51,7 @@ export const FilterSelector = ({
         mb={10}
       >
         <UnorderedList listStyleType={"none"} margin={0} spacing={1} p={2}>
-          {selectedOptions.map((option) => (
+          {options.selected.map((option) => (
             <ListItem
               key={option}
               borderRadius={3}
