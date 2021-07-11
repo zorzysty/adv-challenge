@@ -1,6 +1,6 @@
 import { adsData } from "../mocks/tests/dataOperations"
 
-import { aggregateBy } from "./dataOperations"
+import { aggregateBy, filterData } from "./dataOperations"
 
 describe("aggregateBy", () => {
   test("aggregates counts by the given property value", () => {
@@ -19,6 +19,158 @@ describe("aggregateBy", () => {
         clicks: 7,
         date: "08.10.2021",
         impressions: 444,
+      },
+    ])
+  })
+})
+
+describe("filterData", () => {
+  test("returns the input data if empty arrays are provided", () => {
+    const result = filterData(adsData, [
+      { key: "datasource", value: [] },
+      { key: "campaign", value: [] },
+    ])
+
+    expect(result).toEqual(adsData)
+  })
+
+  test("returns filtered data by array values", () => {
+    const result = filterData(adsData, [
+      { key: "datasource", value: ["Facebook Ads"] },
+      { key: "campaign", value: ["Offer Campaigns - Conversions"] },
+    ])
+
+    expect(result).toEqual([
+      {
+        date: "01.01.2019",
+        datasource: "Facebook Ads",
+        campaign: "Offer Campaigns - Conversions",
+        clicks: 10245,
+        impressions: 764627,
+      },
+      {
+        date: "02.03.2020",
+        datasource: "Facebook Ads",
+        campaign: "Offer Campaigns - Conversions",
+        clicks: 10245,
+        impressions: 764627,
+      },
+      {
+        date: "02.03.2020",
+        datasource: "Facebook Ads",
+        campaign: "Offer Campaigns - Conversions",
+        clicks: 10245,
+        impressions: 764627,
+      },
+    ])
+  })
+
+  test("returns filtered data by array values if multiple provided", () => {
+    const result = filterData(adsData, [
+      { key: "datasource", value: ["Facebook Ads"] },
+      { key: "campaign", value: ["Offer Campaigns - Conversions", "Like Ads"] },
+    ])
+
+    expect(result).toEqual([
+      {
+        date: "01.01.2019",
+        datasource: "Facebook Ads",
+        campaign: "Like Ads",
+        clicks: 274,
+        impressions: 1979,
+      },
+      {
+        date: "01.01.2019",
+        datasource: "Facebook Ads",
+        campaign: "Offer Campaigns - Conversions",
+        clicks: 10245,
+        impressions: 764627,
+      },
+      {
+        date: "02.03.2020",
+        datasource: "Facebook Ads",
+        campaign: "Offer Campaigns - Conversions",
+        clicks: 10245,
+        impressions: 764627,
+      },
+      {
+        date: "02.03.2020",
+        datasource: "Facebook Ads",
+        campaign: "Offer Campaigns - Conversions",
+        clicks: 10245,
+        impressions: 764627,
+      },
+    ])
+  })
+
+  test("includes all values for a given property if empty array is provided", () => {
+    const result = filterData(adsData, [
+      { key: "datasource", value: [] },
+      { key: "campaign", value: ["B2B - Leads"] },
+    ])
+
+    expect(result).toEqual([
+      {
+        date: "01.01.2019",
+        datasource: "Google Adwords",
+        campaign: "B2B - Leads",
+        clicks: 7,
+        impressions: 444,
+      },
+      {
+        date: "02.03.2020",
+        datasource: "Google Adwords",
+        campaign: "B2B - Leads",
+        clicks: 7,
+        impressions: 444,
+      },
+      {
+        date: "08.10.2021",
+        datasource: "Google Adwords",
+        campaign: "B2B - Leads",
+        clicks: 7,
+        impressions: 444,
+      },
+    ])
+  })
+
+  test("does not include entries where one of the filters is not met", () => {
+    const result = filterData(adsData, [
+      { key: "datasource", value: ["Facebook Ads"] },
+      {
+        key: "campaign",
+        value: ["Offer Campaigns - Conversions", "Like Ads", "B2B - Leads"],
+      },
+    ])
+
+    expect(result).toEqual([
+      {
+        date: "01.01.2019",
+        datasource: "Facebook Ads",
+        campaign: "Like Ads",
+        clicks: 274,
+        impressions: 1979,
+      },
+      {
+        date: "01.01.2019",
+        datasource: "Facebook Ads",
+        campaign: "Offer Campaigns - Conversions",
+        clicks: 10245,
+        impressions: 764627,
+      },
+      {
+        date: "02.03.2020",
+        datasource: "Facebook Ads",
+        campaign: "Offer Campaigns - Conversions",
+        clicks: 10245,
+        impressions: 764627,
+      },
+      {
+        date: "02.03.2020",
+        datasource: "Facebook Ads",
+        campaign: "Offer Campaigns - Conversions",
+        clicks: 10245,
+        impressions: 764627,
       },
     ])
   })

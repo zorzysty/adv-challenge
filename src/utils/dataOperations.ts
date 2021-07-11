@@ -14,15 +14,15 @@ type Unarray<T> = T extends Array<infer U> ? U : T
 export const aggregateBy = <DataType extends BaseType>(
   data: DataType,
   property: keyof Unarray<DataType>,
-  counts: Array<keyof Unarray<DataType>>
-): DataType | [] => {
+  metrics: Array<keyof Unarray<DataType>>
+): DataType => {
   const reducer = (accu: Reduced<DataType>, current: Unarray<DataType>) => {
     const aggregated = produce(accu.aggregated, (draft: DataType) => {
-      // add current counts to aggregated values for this property
+      // add current metrics to aggregated values for this property
       if (current[property] === accu.lastPropertyValue) {
-        counts.forEach((count) => {
-          ;(draft[draft.length - 1][count] as number) += current[
-            count
+        metrics.forEach((metric) => {
+          ;(draft[draft.length - 1][metric] as number) += current[
+            metric
           ] as number
         })
         return
@@ -34,8 +34,8 @@ export const aggregateBy = <DataType extends BaseType>(
       }
 
       const newEntry = produce(newEntryStub, (newEntryDraft) => {
-        counts.forEach((count) => {
-          ;(newEntryDraft[count] as number) = current[count] as number
+        metrics.forEach((metric) => {
+          ;(newEntryDraft[metric] as number) = current[metric] as number
         })
       })
 
@@ -55,4 +55,24 @@ export const aggregateBy = <DataType extends BaseType>(
   })
 
   return reduced.aggregated
+}
+
+export const filterData = <DataType extends BaseType>(
+  data: DataType,
+  filters: { key: string; value: string[] }[]
+): DataType => {
+  const result = data.filter((entry) => {
+    const fitsAnyFilter = filters.reduce((accu, curr) => {
+      const fitsFilter =
+        curr.value.length === 0 ||
+        curr.value.includes(entry[curr.key] as string)
+
+      return accu && fitsFilter
+    }, true)
+
+    return fitsAnyFilter
+  })
+
+  // @ts-ignore todo: improve types
+  return result as DataType
 }

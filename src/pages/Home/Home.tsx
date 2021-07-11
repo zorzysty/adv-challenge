@@ -25,25 +25,34 @@ export const Home = () => {
         <Heading as={"h1"}>HOME</Heading>
 
         <HStack spacing={5} px={5} py={2}>
-          <Link as={RouterLink} to="/?datasources=aaa">
+          <Link as={RouterLink} to="/?datasources=Google Analytics">
             single datasource
           </Link>
 
-          <Link as={RouterLink} to="/?datasources=aaa,bbb,ccc,aaa">
+          <Link
+            as={RouterLink}
+            to="/?datasources=Google Analytics,Mailchimp,Facebook Ads"
+          >
             only datasources
           </Link>
 
-          <Link as={RouterLink} to="/?campaigns=xxx">
+          <Link
+            as={RouterLink}
+            to="/?campaigns=New General Campaign - ROM - Desktop"
+          >
             single campaign
           </Link>
 
-          <Link as={RouterLink} to="/?campaigns=xxx,yyy,zzz,yyy">
+          <Link
+            as={RouterLink}
+            to="/?campaigns=New General Campaign - ROM - Desktop,New General Campaign - Rest - Mobile"
+          >
             only campaigns
           </Link>
 
           <Link
             as={RouterLink}
-            to="/?datasources=aaa,bbb,ccc,aaa&campaigns=xxx,yyy,zzz,yyy"
+            to="/?datasources=Google Analytics,Mailchimp,Facebook Ads&campaigns=New General Campaign - ROM - Desktop,New General Campaign - Rest - Mobile"
           >
             both
           </Link>

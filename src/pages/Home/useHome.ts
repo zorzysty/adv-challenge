@@ -4,7 +4,7 @@ import { useQuery } from "react-query"
 
 import { getQueryArray } from "../../utils/url"
 import { getAdsData } from "../../services/requests/ads"
-import { aggregateBy } from "../../utils/dataOperations"
+import { aggregateBy, filterData } from "../../utils/dataOperations"
 
 export const useHome = () => {
   const location = useLocation()
@@ -21,9 +21,17 @@ export const useHome = () => {
     retry: 1,
   })
 
-  const dataCombinedByDate = data
-    ? aggregateBy(data, "date", ["clicks", "impressions"])
+  const filteredData = data
+    ? filterData(data, [
+        { key: "datasource", value: datasources },
+        { key: "campaign", value: campaigns },
+      ])
     : []
+
+  const dataCombinedByDate = aggregateBy(filteredData, "date", [
+    "clicks",
+    "impressions",
+  ])
 
   return {
     datasources,
