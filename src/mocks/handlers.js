@@ -1,8 +1,6 @@
 import { rest } from "msw"
 
-import csvFile from "./adsData.chunk.csv"
-
-const baseUrl = process.env.REACT_APP_BASE_URL
+import csvFile from "./adsData.csv"
 
 const adsDataResolver = async (_, res, ctx) => {
   const file = await fetch(csvFile).then((res) => res.text())
@@ -22,4 +20,9 @@ const adsDataResolver = async (_, res, ctx) => {
   // )
 }
 
-export const handlers = [rest.get(`${baseUrl}/*.csv`, adsDataResolver)]
+export const handlers = [
+  rest.get(
+    "http://adverity-challenge.s3-website-eu-west-1.amazonaws.com/DAMKBAoDBwoDBAkOBAYFCw.csv",
+    adsDataResolver
+  ),
+]

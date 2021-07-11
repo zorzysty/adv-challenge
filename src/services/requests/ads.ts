@@ -10,6 +10,6 @@ export type AdsData = {
 }[]
 
 export const getAdsData = (): Promise<AdsData> =>
-  Api.get("/DAMKBAoDBwoDBAkOBAYFCw.csv").then(({ data }) =>
-    adsDataTransform(data)
-  )
+  Api.get(
+    "http://adverity-challenge.s3-website-eu-west-1.amazonaws.com/DAMKBAoDBwoDBAkOBAYFCw.csv"
+  ).then(({ data }) => adsDataTransform(data))
